@@ -10,7 +10,7 @@ public:
         int start = 0;
         int gasSum = 0;
         int costSum = 0;
-        
+
         int loc = start;
         for (int i:gas){
             gasSum += i ;
