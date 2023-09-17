@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-target("35searchInsert")
+target("129sumNumbers")
     set_kind("binary")
     add_files("src/*.cpp")
 

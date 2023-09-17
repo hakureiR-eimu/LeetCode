@@ -6,26 +6,29 @@
 
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    static int romanToInt(string s) {
+    static int romanToInt(string s)
+    {
         unordered_map<char, int> map = {
-            {'I',1},
-            {'V',5},
-            {'X',10},
-            {'L',50},
-            {'C',100},
-            {'D',500},
-            {'M',1000}
-        };
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}};
         int ans = 0;
-        int n = s.length();
-        for(int i=0; i<n ; ++i){
+        int n   = s.length();
+        for (int i = 0; i < n; ++i)
+        {
             int value = map[s[i]];
-            //cout << value << endl;
-            if(i < n-1 && value < map[s[i+1]] ){
-                ans -=value;
-                //cout << map[s[i+1]] << endl;
+            // cout << value << endl;
+            if (i < n - 1 && value < map[s[i + 1]])
+            {
+                ans -= value;
+                // cout << map[s[i+1]] << endl;
             }
             else ans += value;
         }

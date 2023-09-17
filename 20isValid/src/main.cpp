@@ -5,26 +5,30 @@
 
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isValid(string s) {
-        stack<char> stk;
-        map<char, char> m ={
-            { ')','('},
-            { '}','{'},
-            { ']','['},
-            { '"','"'}
-        };
-        for (char ch:s){
-            if(stk.empty()){
+    bool isValid(string s)
+    {
+        stack<char>     stk;
+        map<char, char> m = {
+            {')', '('},
+            {'}', '{'},
+            {']', '['},
+            {'"', '"'}};
+        for (char ch : s)
+        {
+            if (stk.empty())
+            {
                 stk.push(ch);
             }
-            else if(stk.top() == m[ch]){
+            else if (stk.top() == m[ch])
+            {
                 stk.pop();
             }
             else stk.push(ch);
         }
-        if(stk.empty()) return true;
+        if (stk.empty()) return true;
         return false;
     }
 };
