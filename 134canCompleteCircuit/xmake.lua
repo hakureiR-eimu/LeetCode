@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-target("80创造有序数组中的重复项2")
+target("134canCompleteCircuit")
     set_kind("binary")
     add_files("src/*.cpp")
 
