@@ -1,54 +1,39 @@
 #include <iostream>
-
+#include <unordered_map>
 using namespace std;
 
-class Node {
+class Node
+{
 public:
-    int val;
+    int   val;
     Node* next;
     Node* random;
 
-    Node(int _val) {
-        val = _val;
-        next = NULL;
+    Node(int _val)
+    {
+        val    = _val;
+        next   = NULL;
         random = NULL;
     }
 };
 
+class Solution
+{
+private:
+    unordered_map<Node*, Node*> cachedNode;
 
-class Solution {
 public:
-    Node* copyRandomList(Node* head) {
-        if(!head) return nullptr;
-        Node *pre;
-        Node *cur;
-        Node *p = head;
-        Node *tmp;
-        while(p){
-            tmp = p->next;
-            p->next = new Node(p->val);
-            p->next->next = tmp;
-            p = tmp;
+    Node* copyRandomList(Node* head)
+    {
+        if (head == nullptr) return nullptr;
+        if (! cachedNode.count(head))
+        {
+            Node* newNode    = new Node(head->val);
+            cachedNode[head] = newNode;
+            newNode->random  = copyRandomList(head->random);
+            newNode->next    = copyRandomList(head->next);
         }
-        p = head;
-        pre = p->next;
-        while(p){
-            tmp = p;
-            cur = tmp->next;
-            p = p->next->next;
-            if(tmp->random){
-                cur->random = tmp->random->next;
-            }else{
-                cur->random = NULL;
-            }
-            if(cur->next){
-                cur->next = cur->next->next;
-            }
-            else {
-                cur->next = NULL;
-            }
-        }
-        return pre;
+        return cachedNode[head];
     }
 };
 
