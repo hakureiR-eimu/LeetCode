@@ -1,75 +1,83 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <vector>
+
 using namespace std;
 
-class Solution
-{
-private:
-    bool isNum(char ch)
-    {
-        if (ch == '+' || ch == '-' || ch == '(' || ch == ')' || ch == ' ')
-            return false;
-        return true;
-    }
-    int calNum(string num)
-    {
-        int n = num.length();
-        int sum = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            sum *= 10;
-            sum += num[i] - '0';
+class Solution {
+  public:
+    void replace( string &s ) {
+        int pos = s.find( " " );
+        while ( pos != -1 ) {
+            s.replace( pos, 1, "" );
+            pos = s.find( " " );
         }
-        return sum;
     }
-
-public:
-    int calculate(string s)
-    {
-        stack<int> stk;
-        char ch;
-        for (int i = 0; i < s.size(); ++i)
-        {
-            if (isNum(s[i]))
-            {
-                string sNum = "";
-                while (isNum(s[i]) && i < s.size())
-                {
-                    sNum.push_back(ch);
-                    ++i;
+    int calculate( string s ) {
+        // 存放所有的数字
+        stack<int> nums;
+        // 为了防止第一个数为负数，先往 nums 加个 0
+        nums.push( 0 );
+        // 将所有的空格去掉
+        replace( s );
+        // 存放所有的操作，包括 +/-
+        stack<char> ops;
+        int n = s.size();
+        for ( int i = 0; i < n; i++ ) {
+            char c = s[ i ];
+            if ( c == '(' )
+                ops.push( c );
+            else if ( c == ')' ) {
+                // 计算到最近一个左括号为止
+                while ( !ops.empty() ) {
+                    char op = ops.top();
+                    if ( op != '(' )
+                        calc( nums, ops );
+                    else {
+                        ops.pop();
+                        break;
+                    }
                 }
-                int num = calNum(sNum);
-                stk.push(num);
-            }
-            else
-            {
-                switch (s[i])
-                {
-                case ('+'):
-                    int y = stk.top();
-                    stk.pop();
-                    int x = stk.top();
-                    stk.pop();
-                    stk.push(x + y);
-                    break;
-                case ('-'):
-                    int y = stk.top();
-                    stk.pop();
-                    int x = stk.top();
-                    stk.pop();
-                    stk.push(x - y);
-                case ('('):
-                case (')'):
-                case (' '):
+            } else {
+                if ( isdigit( c ) ) {
+                    int cur_num = 0;
+                    int j = i;
+                    // 将从 i 位置开始后面的连续数字整体取出，加入 nums
+                    while ( j < n && isdigit( s[ j ] ) )
+                        cur_num = cur_num * 10 + ( s[ j++ ] - '0' );
+                    // 注意上面的计算一定要有括号，否则有可能会溢出
+                    nums.push( cur_num );
+                    i = j - 1;
+                } else {
+                    if ( i > 0 && ( s[ i - 1 ] == '(' || s[ i - 1 ] == '+' ||
+                                    s[ i - 1 ] == '-' ) ) {
+                        nums.push( 0 );
+                    }
+                    // 有一个新操作要入栈时，先把栈内可以算的都算了
+                    while ( !ops.empty() && ops.top() != '(' )
+                        calc( nums, ops );
+                    ops.push( c );
                 }
             }
         }
+        while ( !ops.empty() )
+            calc( nums, ops );
+        return nums.top();
+    }
+    void calc( stack<int> &nums, stack<char> &ops ) {
+        if ( nums.size() < 2 || ops.empty() ) return;
+        int b = nums.top();
+        nums.pop();
+        int a = nums.top();
+        nums.pop();
+        char op = ops.top();
+        ops.pop();
+        nums.push( op == '+' ? a + b : a - b );
     }
 };
 
-int main(int argc, char **argv)
-{
+int main( int argc, char **argv ) {
     cout << "hello world!" << endl;
     return 0;
 }
