@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "string_view": "cpp",
+        "streambuf": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "initializer_list": "cpp"
+    }
+}
