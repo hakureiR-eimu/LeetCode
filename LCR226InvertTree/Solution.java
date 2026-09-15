@@ -26,20 +26,16 @@ class TreeNode {
 public class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
-        else if (root.left == null && root.right == null) return root;
-        else if (root.left == null) {
-            TreeNode right = invertTree(root.right);
-            root.left = right;
-            root.right = null;
-        } else if (root.right == null) {
-            TreeNode left = invertTree(root.left);
-            root.right = left;
-            root.left = null;
-        } else {
-            TreeNode left = invertTree(root.left);
-            TreeNode right = invertTree(root.right);
-            root.left = right;
-            root.right = left;
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            TreeNode left = node.left;
+            TreeNode right = node.right;
+            node.left = right;
+            node.right = left;
+            if (node.left != null) queue.add(node.left);
+            if (node.right != null) queue.add(node.right);
         }
         return root;
     }
